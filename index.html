@@ -16,7 +16,30 @@
 
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="intro-lock">
+
+<!-- ============ INTRO / OPENING ============ -->
+<div class="intro" id="introScreen">
+  <div class="intro__mark">
+    <svg viewBox="0 0 120 120" class="intro__ring" aria-hidden="true">
+      <circle cx="60" cy="60" r="52" />
+    </svg>
+    <img src="images/favicon-256.png" alt="" class="intro__logo">
+  </div>
+  <p class="intro__brand">Société Iftin</p>
+  <p class="intro__tagline">SARL Import Export · Est. 1990</p>
+
+  <div class="intro__langs" id="introLangs">
+    <p class="intro__prompt">Choisissez votre langue · Choose your language · اختر لغتك · Dooro luqaddaada · ቋንቋዎን ይምረጡ</p>
+    <div class="intro__langgrid">
+      <button data-lang="fr">🇫🇷 Français</button>
+      <button data-lang="en">🇬🇧 English</button>
+      <button data-lang="ar">🇸🇦 العربية</button>
+      <button data-lang="so">🇸🇴 Soomaali</button>
+      <button data-lang="am">🇪🇹 አማርኛ</button>
+    </div>
+  </div>
+</div>
 
 <!-- ============ NAVBAR ============ -->
 <header class="navbar" id="navbar">
@@ -56,7 +79,7 @@
       </div>
     </div>
     <div class="hero__art" data-reveal>
-      <img src="images/logo-full.png" alt="Dromadaire, vache et chèvre — Société Iftin" class="hero__artimg">
+      <img src="images/hero-art-transparent.png" alt="Dromadaire, vache et chèvre — Société Iftin" class="hero__artimg">
     </div>
   </div>
   <div class="grass-divider" aria-hidden="true"></div>
@@ -68,14 +91,6 @@
     <div class="about__media" data-reveal>
       <div class="about__badge">
         <img src="images/navbar-logo-transparent.png" alt="Société Iftin, Est. 1990">
-      </div>
-      <div class="about__audio">
-        <p class="about__audiolabel" data-i18n="about_audio_label">Écouter la présentation audio</p>
-        <audio controls preload="none">
-          <!-- Fichier audio à ajouter : images/audio/presentation-fr.mp3 -->
-          <source src="audio/presentation-fr.mp3" type="audio/mpeg">
-        </audio>
-        <p class="about__audiosoon" data-i18n="audio_soon">Audio à venir</p>
       </div>
     </div>
     <div class="about__text" data-reveal>
@@ -110,53 +125,42 @@
     <p class="gallery__sub" data-i18n="gallery_sub">Chaque animal est sélectionné selon des critères précis de santé, d'âge et de poids, avant transport et exportation.</p>
   </div>
 
-  <div class="gallery__grid">
+  <div class="showcase" data-reveal>
+    <div class="showcase__tabs" role="tablist">
+      <button class="showcase__tab is-active" data-target="camel" role="tab" aria-selected="true">
+        <span class="showcase__tabnum">01</span>
+        <span class="showcase__tabname" data-i18n="gallery_camel_title">Dromadaires</span>
+      </button>
+      <button class="showcase__tab" data-target="cattle" role="tab" aria-selected="false">
+        <span class="showcase__tabnum">02</span>
+        <span class="showcase__tabname" data-i18n="gallery_cattle_title">Bovins</span>
+      </button>
+      <button class="showcase__tab" data-target="goat" role="tab" aria-selected="false">
+        <span class="showcase__tabnum">03</span>
+        <span class="showcase__tabname" data-i18n="gallery_goat_title">Caprins</span>
+      </button>
+      <button class="showcase__tab" data-target="sheep" role="tab" aria-selected="false">
+        <span class="showcase__tabnum">04</span>
+        <span class="showcase__tabname" data-i18n="gallery_sheep_title">Ovins</span>
+      </button>
+      <button class="showcase__tab" data-target="logistics" role="tab" aria-selected="false">
+        <span class="showcase__tabnum">05</span>
+        <span class="showcase__tabname" data-i18n="gallery_logistics_title">Logistique &amp; certification</span>
+      </button>
+    </div>
 
-    <article class="card" data-reveal>
-      <div class="card__photo card__photo--camel">
-        <span class="card__soon" data-i18n="gallery_photo_soon">Photo à venir</span>
+    <div class="showcase__panel">
+      <div class="showcase__visual">
+        <div class="showcase__photo" id="showcasePhoto" data-species="camel">
+          <span class="showcase__soon" data-i18n="gallery_photo_soon">Photo à venir</span>
+        </div>
       </div>
-      <h3 data-i18n="gallery_camel_title">Dromadaires</h3>
-      <p data-i18n="gallery_camel_desc">Dromadaires d'Afrique de l'Est, robustes et résistants à la chaleur, destinés à l'exportation vivante comme à la production de viande et de lait.</p>
-      <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-    </article>
-
-    <article class="card" data-reveal>
-      <div class="card__photo card__photo--cattle">
-        <span class="card__soon" data-i18n="gallery_photo_soon">Photo à venir</span>
+      <div class="showcase__text">
+        <h3 id="showcaseTitle" data-i18n="gallery_camel_title">Dromadaires</h3>
+        <p id="showcaseDesc" data-i18n="gallery_camel_desc">Dromadaires d'Afrique de l'Est, robustes et résistants à la chaleur, destinés à l'exportation vivante comme à la production de viande et de lait.</p>
+        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
       </div>
-      <h3 data-i18n="gallery_cattle_title">Bovins</h3>
-      <p data-i18n="gallery_cattle_desc">Bovins sélectionnés pour la qualité de leur viande et leur endurance, adaptés aux longs transports vers les marchés régionaux et internationaux.</p>
-      <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-    </article>
-
-    <article class="card" data-reveal>
-      <div class="card__photo card__photo--goat">
-        <span class="card__soon" data-i18n="gallery_photo_soon">Photo à venir</span>
-      </div>
-      <h3 data-i18n="gallery_goat_title">Caprins</h3>
-      <p data-i18n="gallery_goat_desc">Chèvres élevées pour la viande, très demandées sur les marchés du Golfe et d'Afrique pour leur qualité et leur disponibilité toute l'année.</p>
-      <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-    </article>
-
-    <article class="card" data-reveal>
-      <div class="card__photo card__photo--sheep">
-        <span class="card__soon" data-i18n="gallery_photo_soon">Photo à venir</span>
-      </div>
-      <h3 data-i18n="gallery_sheep_title">Ovins</h3>
-      <p data-i18n="gallery_sheep_desc">Moutons de qualité, particulièrement recherchés pour les grandes occasions religieuses et festives, livrables toute l'année.</p>
-      <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-    </article>
-
-    <article class="card card--wide" data-reveal>
-      <div class="card__photo card__photo--logistics">
-        <span class="card__soon" data-i18n="gallery_photo_soon">Photo à venir</span>
-      </div>
-      <h3 data-i18n="gallery_logistics_title">Logistique &amp; certification</h3>
-      <p data-i18n="gallery_logistics_desc">Transport maritime et terrestre, certificats sanitaires, quarantaine et accompagnement documentaire complet, pour une exportation sans complication.</p>
-      <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-    </article>
-
+    </div>
   </div>
   <div class="grass-divider" aria-hidden="true"></div>
 </section>

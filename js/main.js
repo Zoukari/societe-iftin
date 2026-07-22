@@ -102,6 +102,69 @@
     applyLanguage(supported.includes(browser) ? browser : 'fr');
   })();
 
+  /* ---------- Showcase (onglets bétail) ---------- */
+  const speciesMap = {
+    camel:      { title: 'gallery_camel_title',      desc: 'gallery_camel_desc' },
+    cattle:     { title: 'gallery_cattle_title',      desc: 'gallery_cattle_desc' },
+    goat:       { title: 'gallery_goat_title',        desc: 'gallery_goat_desc' },
+    sheep:      { title: 'gallery_sheep_title',       desc: 'gallery_sheep_desc' },
+    logistics:  { title: 'gallery_logistics_title',   desc: 'gallery_logistics_desc' }
+  };
+  const showcaseTabs = document.querySelectorAll('.showcase__tab');
+  const showcasePhoto = document.getElementById('showcasePhoto');
+  const showcaseTitle = document.getElementById('showcaseTitle');
+  const showcaseDesc = document.getElementById('showcaseDesc');
+  const showcaseTextWrap = document.querySelector('.showcase__text');
+
+  function setShowcase(species) {
+    const dict = translations[document.documentElement.getAttribute('lang') || 'fr'];
+    const map = speciesMap[species];
+    if (!map) return;
+
+    showcaseTextWrap.classList.add('is-fading');
+    setTimeout(() => {
+      showcaseTitle.textContent = dict[map.title];
+      showcaseTitle.setAttribute('data-i18n', map.title);
+      showcaseDesc.textContent = dict[map.desc];
+      showcaseDesc.setAttribute('data-i18n', map.desc);
+      showcasePhoto.setAttribute('data-species', species);
+      showcaseTextWrap.classList.remove('is-fading');
+    }, 180);
+
+    showcaseTabs.forEach(t => {
+      const active = t.getAttribute('data-target') === species;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  showcaseTabs.forEach(tab => {
+    tab.addEventListener('click', () => setShowcase(tab.getAttribute('data-target')));
+  });
+
+  /* ---------- Intro / opening screen ---------- */
+  const introScreen = document.getElementById('introScreen');
+  const introLangButtons = introScreen.querySelectorAll('.intro__langgrid button');
+
+  function closeIntro() {
+    introScreen.classList.add('is-leaving');
+    document.body.classList.remove('intro-lock');
+    sessionStorage.setItem('iftin_intro_seen', '1');
+    setTimeout(() => { introScreen.style.display = 'none'; }, 550);
+  }
+
+  if (sessionStorage.getItem('iftin_intro_seen')) {
+    introScreen.style.display = 'none';
+    document.body.classList.remove('intro-lock');
+  } else {
+    introLangButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyLanguage(btn.getAttribute('data-lang'));
+        closeIntro();
+      });
+    });
+  }
+
   /* ---------- Contact form -> Email / WhatsApp ---------- */
   const form = document.getElementById('contactForm');
   const formNote = document.getElementById('formNote');
