@@ -72,7 +72,8 @@
     localStorage.setItem('iftin_lang', lang);
 
     // Re-render le contenu de la section bétail immersive (titre/desc/bouton galerie)
-    if (typeof refreshBeastActive === 'function' && refreshBeastActive) refreshBeastActive();
+    // Re-render les cartes bétail (textes "Voir la galerie" / "Photo à venir")
+    document.querySelectorAll('.beast-card__photo').forEach(renderBeastCard);
   }
 
   langToggle.addEventListener('click', () => {
@@ -108,103 +109,47 @@
     return document.documentElement.getAttribute('lang') || 'fr';
   }
 
-  const speciesOrder = ['camel', 'cattle', 'goat', 'sheep', 'logistics'];
-  const speciesKeys = {
-    camel:      { title: 'gallery_camel_title',     desc: 'gallery_camel_desc' },
-    cattle:     { title: 'gallery_cattle_title',     desc: 'gallery_cattle_desc' },
-    goat:       { title: 'gallery_goat_title',       desc: 'gallery_goat_desc' },
-    sheep:      { title: 'gallery_sheep_title',      desc: 'gallery_sheep_desc' },
-    logistics:  { title: 'gallery_logistics_title',  desc: 'gallery_logistics_desc' }
-  };
+  function renderBeastCard(container) {
+    const species = container.getAttribute('data-species');
+    const photos = speciesPhotos[species] || [];
+    container.innerHTML = '';
 
-  /* ---------- Beast scroller (section immersive à fond animé) ---------- */
-  const beastScroller = document.getElementById('beastScroller');
-  const beastBg = document.getElementById('beastBg');
-  const beastProgress = document.getElementById('beastProgress');
-  const beastContent = document.querySelector('.beast-content');
-  const beastNum = document.getElementById('beastNum');
-  const beastTitle = document.getElementById('beastTitle');
-  const beastDesc = document.getElementById('beastDesc');
-  const beastViewBtn = document.getElementById('beastViewBtn');
-  let beastActive = -1;
-  let refreshBeastActive = null;
+    if (photos.length === 0) {
+      const span = document.createElement('span');
+      span.className = 'beast-card__soon';
+      span.setAttribute('data-i18n', 'gallery_photo_soon');
+      span.textContent = translations[currentLangCode()].gallery_photo_soon;
+      container.appendChild(span);
+      return;
+    }
 
-  if (beastScroller) {
-    const bgImgs = Array.from(beastBg.querySelectorAll('img'));
-    // charge la première photo dispo de chaque espèce comme fond
-    bgImgs.forEach(img => {
-      const species = img.getAttribute('data-species');
-      const photos = speciesPhotos[species] || [];
-      if (photos.length) img.src = photos[0];
-    });
+    const img = document.createElement('img');
+    img.src = photos[0];
+    img.alt = '';
+    img.loading = 'lazy';
+    container.appendChild(img);
 
-    speciesOrder.forEach((species, i) => {
-      const dot = document.createElement('button');
-      dot.setAttribute('aria-label', species);
-      if (i === 0) dot.classList.add('is-active');
-      dot.addEventListener('click', () => {
-        const top = beastScroller.offsetTop + (beastScroller.offsetHeight / speciesOrder.length) * i + 10;
-        window.scrollTo({ top, behavior: 'smooth' });
+    const card = container.closest('.beast-card');
+    card.classList.add('has-photos');
+
+    const hint = document.createElement('span');
+    hint.className = 'beast-card__hint';
+    const dict = translations[currentLangCode()];
+    hint.textContent = photos.length > 1
+      ? `🔍 ${dict.gallery_view_gallery} (${photos.length})`
+      : `🔍 ${dict.gallery_view_zoom}`;
+    container.appendChild(hint);
+
+    if (!card.dataset.lightboxBound) {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return; // laisser le lien "Demander un devis" fonctionner normalement
+        openLightbox(species, 0);
       });
-      beastProgress.appendChild(dot);
-    });
-    const progressDots = Array.from(beastProgress.children);
-
-    function setBeastActive(index, force) {
-      if (index === beastActive && !force) return;
-      beastActive = index;
-      const species = speciesOrder[index];
-      const dict = translations[currentLangCode()];
-      const map = speciesKeys[species];
-
-      bgImgs.forEach(img => img.classList.toggle('is-active', img.getAttribute('data-species') === species));
-      progressDots.forEach((d, i) => d.classList.toggle('is-active', i === index));
-
-      beastContent.classList.remove('is-in');
-      setTimeout(() => {
-        beastNum.textContent = String(index + 1).padStart(2, '0');
-        beastTitle.textContent = dict[map.title];
-        beastTitle.setAttribute('data-i18n', map.title);
-        beastDesc.textContent = dict[map.desc];
-        beastDesc.setAttribute('data-i18n', map.desc);
-
-        const photos = speciesPhotos[species] || [];
-        if (photos.length > 1) {
-          beastViewBtn.hidden = false;
-          beastViewBtn.querySelector('span').textContent = `${dict.gallery_view_gallery} (${photos.length})`;
-        } else if (photos.length === 1) {
-          beastViewBtn.hidden = false;
-          beastViewBtn.querySelector('span').textContent = dict.gallery_view_zoom;
-        } else {
-          beastViewBtn.hidden = true;
-        }
-        beastContent.classList.add('is-in');
-      }, 120);
+      card.dataset.lightboxBound = '1';
     }
-
-    beastViewBtn.addEventListener('click', () => openLightbox(speciesOrder[beastActive], 0));
-    refreshBeastActive = () => setBeastActive(beastActive < 0 ? 0 : beastActive, true);
-
-    function onBeastScroll() {
-      const rect = beastScroller.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      if (total <= 0) return;
-      const progress = Math.min(1, Math.max(0, -rect.top / total));
-      const index = Math.min(speciesOrder.length - 1, Math.floor(progress * speciesOrder.length));
-      setBeastActive(index);
-    }
-
-    let beastTicking = false;
-    window.addEventListener('scroll', () => {
-      if (!beastTicking) {
-        beastTicking = true;
-        requestAnimationFrame(() => { onBeastScroll(); beastTicking = false; });
-      }
-    }, { passive: true });
-
-    setBeastActive(0);
-    onBeastScroll();
   }
+
+  document.querySelectorAll('.beast-card__photo').forEach(renderBeastCard);
 
   /* ---------- Lightbox ---------- */
   const lightbox = document.getElementById('lightbox');
