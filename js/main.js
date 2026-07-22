@@ -4,6 +4,16 @@
 (function(){
   "use strict";
 
+  /* ---------- Stockage sécurisé (ne doit jamais faire planter le script) ---------- */
+  const safeStorage = {
+    get(store, key) {
+      try { return store.getItem(key); } catch (e) { return null; }
+    },
+    set(store, key, value) {
+      try { store.setItem(key, value); } catch (e) { /* silencieux */ }
+    }
+  };
+
   /* ---------- Navbar scroll + mobile toggle ---------- */
   const navbar = document.getElementById('navbar');
   const navToggle = document.getElementById('navToggle');
@@ -69,11 +79,11 @@
       b.classList.toggle('is-active', b.getAttribute('data-lang') === lang);
     });
 
-    localStorage.setItem('iftin_lang', lang);
+    safeStorage.set(localStorage, 'iftin_lang', lang);
 
     // Re-render le contenu de la section bétail immersive (titre/desc/bouton galerie)
-    // Re-render les cartes bétail (textes "Voir la galerie" / "Photo à venir")
-    document.querySelectorAll('.beast-card__photo').forEach(renderBeastCard);
+    // Re-render les lignes bétail (textes "Voir la galerie" / "Photo à venir")
+    document.querySelectorAll('.beast-row__photo').forEach(renderBeastCard);
   }
 
   langToggle.addEventListener('click', () => {
@@ -116,7 +126,7 @@
 
     if (photos.length === 0) {
       const span = document.createElement('span');
-      span.className = 'beast-card__soon';
+      span.className = 'beast-row__soon';
       span.setAttribute('data-i18n', 'gallery_photo_soon');
       span.textContent = translations[currentLangCode()].gallery_photo_soon;
       container.appendChild(span);
@@ -128,28 +138,23 @@
     img.alt = '';
     img.loading = 'lazy';
     container.appendChild(img);
-
-    const card = container.closest('.beast-card');
-    card.classList.add('has-photos');
+    container.classList.add('has-photos');
 
     const hint = document.createElement('span');
-    hint.className = 'beast-card__hint';
+    hint.className = 'beast-row__hint';
     const dict = translations[currentLangCode()];
     hint.textContent = photos.length > 1
       ? `🔍 ${dict.gallery_view_gallery} (${photos.length})`
       : `🔍 ${dict.gallery_view_zoom}`;
     container.appendChild(hint);
 
-    if (!card.dataset.lightboxBound) {
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('a')) return; // laisser le lien "Demander un devis" fonctionner normalement
-        openLightbox(species, 0);
-      });
-      card.dataset.lightboxBound = '1';
+    if (!container.dataset.lightboxBound) {
+      container.addEventListener('click', () => openLightbox(species, 0));
+      container.dataset.lightboxBound = '1';
     }
   }
 
-  document.querySelectorAll('.beast-card__photo').forEach(renderBeastCard);
+  document.querySelectorAll('.beast-row__photo').forEach(renderBeastCard);
 
   /* ---------- Lightbox ---------- */
   const lightbox = document.getElementById('lightbox');
@@ -235,12 +240,12 @@
   function closeIntro() {
     introScreen.classList.add('is-leaving');
     document.body.classList.remove('intro-lock');
-    sessionStorage.setItem('iftin_intro_seen', '1');
+    safeStorage.set(sessionStorage, 'iftin_intro_seen', '1');
     setTimeout(() => { introScreen.style.display = 'none'; }, 550);
     showKlikFloat();
   }
 
-  if (sessionStorage.getItem('iftin_intro_seen')) {
+  if (safeStorage.get(sessionStorage, 'iftin_intro_seen')) {
     introScreen.style.display = 'none';
     document.body.classList.remove('intro-lock');
     showKlikFloat();
@@ -309,7 +314,7 @@
   // (placé en fin de script pour que toutes les fonctions/données utilisées
   // par applyLanguage — filières, lightbox, etc. — soient déjà définies)
   (function initLang() {
-    const saved = localStorage.getItem('iftin_lang');
+    const saved = safeStorage.get(localStorage, 'iftin_lang');
     if (saved && translations[saved]) return applyLanguage(saved);
 
     const browser = (navigator.language || 'fr').slice(0, 2).toLowerCase();
