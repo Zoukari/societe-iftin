@@ -292,6 +292,7 @@ body.intro-lock{overflow:hidden;height:100vh;}
 .markets-head h2{font-size:clamp(1.6rem,3vw,2.2rem);}
 .markets-sub{color:#4b4433;}
 .markets-ticker{
+  max-width:560px;margin:0 auto;
   overflow:hidden;border-radius:16px;
   background:linear-gradient(90deg,var(--cream) 0%, transparent 6%, transparent 94%, var(--cream) 100%),
              linear-gradient(160deg,var(--cream-2),var(--cream));

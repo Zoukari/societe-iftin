@@ -333,23 +333,17 @@
   function closeIntro() {
     introScreen.classList.add('is-leaving');
     document.body.classList.remove('intro-lock');
-    safeStorage.set(sessionStorage, 'iftin_intro_seen', '1');
     setTimeout(() => { introScreen.style.display = 'none'; }, 550);
     showKlikFloat();
   }
 
-  if (safeStorage.get(sessionStorage, 'iftin_intro_seen')) {
-    introScreen.style.display = 'none';
-    document.body.classList.remove('intro-lock');
-    showKlikFloat();
-  } else {
-    introLangButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        applyLanguage(btn.getAttribute('data-lang'));
-        closeIntro();
-      });
+  // L'écran de choix de langue s'affiche systématiquement à chaque chargement de page.
+  introLangButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyLanguage(btn.getAttribute('data-lang'));
+      closeIntro();
     });
-  }
+  });
 
   /* ---------- Contact form -> Email / WhatsApp ---------- */
   const form = document.getElementById('contactForm');
@@ -381,7 +375,7 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    const action = e.submitter ? e.submitter.getAttribute('data-action') : 'email';
+    const action = e.submitter ? e.submitter.getAttribute('data-action') : 'whatsapp';
 
     if (!form.checkValidity()) {
       formNote.hidden = false;
