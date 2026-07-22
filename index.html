@@ -168,61 +168,72 @@
   <div class="gallery__head" data-reveal>
     <p class="eyebrow" data-i18n="gallery_eyebrow">Notre bétail</p>
     <h2 data-i18n="gallery_title">Ce que nous exportons</h2>
-    <p class="gallery__sub" data-i18n="gallery_sub">Chaque animal est sélectionné selon des critères précis de santé, d'âge et de poids, avant transport et exportation.</p>
+    <p class="gallery__sub" data-i18n="gallery_sub">Chaque animal est sélectionné selon des critères précis de santé, d'âge et de poids, avant transport et exportation. Faites glisser pour découvrir chaque filière.</p>
   </div>
 
-  <div class="filieres">
+  <div class="filmstrip-wrap" data-reveal>
+    <div class="filmstrip" id="filmstrip">
 
-    <article class="filiere" data-reveal data-species="camel">
-      <span class="filiere__num">01</span>
-      <div class="filiere__media"><div class="filiere__photo" data-species="camel"></div></div>
-      <div class="filiere__text">
-        <h3 data-i18n="gallery_camel_title">Dromadaires</h3>
-        <p data-i18n="gallery_camel_desc">Dromadaires d'Afrique de l'Est, robustes et résistants à la chaleur, destinés à l'exportation vivante comme à la production de viande et de lait.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </article>
+      <article class="slide" data-species="camel">
+        <div class="slide__photo" data-species="camel"></div>
+        <div class="slide__scrim"></div>
+        <div class="slide__content">
+          <span class="slide__num">01</span>
+          <h3 data-i18n="gallery_camel_title">Dromadaires</h3>
+          <p data-i18n="gallery_camel_desc">Dromadaires d'Afrique de l'Est, robustes et résistants à la chaleur, destinés à l'exportation vivante comme à la production de viande et de lait.</p>
+          <a href="#contact" class="card__link card__link--light" data-i18n="gallery_cta">Demander un devis →</a>
+        </div>
+      </article>
 
-    <article class="filiere filiere--reverse" data-reveal data-species="cattle">
-      <span class="filiere__num">02</span>
-      <div class="filiere__media"><div class="filiere__photo" data-species="cattle"></div></div>
-      <div class="filiere__text">
-        <h3 data-i18n="gallery_cattle_title">Bovins</h3>
-        <p data-i18n="gallery_cattle_desc">Bovins sélectionnés pour la qualité de leur viande et leur endurance, adaptés aux longs transports vers les marchés régionaux et internationaux.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </article>
+      <article class="slide" data-species="cattle">
+        <div class="slide__photo" data-species="cattle"></div>
+        <div class="slide__scrim"></div>
+        <div class="slide__content">
+          <span class="slide__num">02</span>
+          <h3 data-i18n="gallery_cattle_title">Bovins</h3>
+          <p data-i18n="gallery_cattle_desc">Bovins sélectionnés pour la qualité de leur viande et leur endurance, adaptés aux longs transports vers les marchés régionaux et internationaux.</p>
+          <a href="#contact" class="card__link card__link--light" data-i18n="gallery_cta">Demander un devis →</a>
+        </div>
+      </article>
 
-    <article class="filiere" data-reveal data-species="goat">
-      <span class="filiere__num">03</span>
-      <div class="filiere__media"><div class="filiere__photo" data-species="goat"></div></div>
-      <div class="filiere__text">
-        <h3 data-i18n="gallery_goat_title">Caprins</h3>
-        <p data-i18n="gallery_goat_desc">Chèvres élevées pour la viande, très demandées sur les marchés du Golfe et d'Afrique pour leur qualité et leur disponibilité toute l'année.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </article>
+      <article class="slide" data-species="goat">
+        <div class="slide__photo" data-species="goat"></div>
+        <div class="slide__scrim"></div>
+        <div class="slide__content">
+          <span class="slide__num">03</span>
+          <h3 data-i18n="gallery_goat_title">Caprins</h3>
+          <p data-i18n="gallery_goat_desc">Chèvres élevées pour la viande, très demandées sur les marchés du Golfe et d'Afrique pour leur qualité et leur disponibilité toute l'année.</p>
+          <a href="#contact" class="card__link card__link--light" data-i18n="gallery_cta">Demander un devis →</a>
+        </div>
+      </article>
 
-    <article class="filiere filiere--reverse" data-reveal data-species="sheep">
-      <span class="filiere__num">04</span>
-      <div class="filiere__media"><div class="filiere__photo" data-species="sheep"></div></div>
-      <div class="filiere__text">
-        <h3 data-i18n="gallery_sheep_title">Ovins</h3>
-        <p data-i18n="gallery_sheep_desc">Moutons de qualité, particulièrement recherchés pour les grandes occasions religieuses et festives, livrables toute l'année.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </article>
+      <article class="slide" data-species="sheep">
+        <div class="slide__photo" data-species="sheep"></div>
+        <div class="slide__scrim"></div>
+        <div class="slide__content">
+          <span class="slide__num">04</span>
+          <h3 data-i18n="gallery_sheep_title">Ovins</h3>
+          <p data-i18n="gallery_sheep_desc">Moutons de qualité, particulièrement recherchés pour les grandes occasions religieuses et festives, livrables toute l'année.</p>
+          <a href="#contact" class="card__link card__link--light" data-i18n="gallery_cta">Demander un devis →</a>
+        </div>
+      </article>
 
-    <article class="filiere" data-reveal data-species="logistics">
-      <span class="filiere__num">05</span>
-      <div class="filiere__media"><div class="filiere__photo" data-species="logistics"></div></div>
-      <div class="filiere__text">
-        <h3 data-i18n="gallery_logistics_title">Logistique &amp; certification</h3>
-        <p data-i18n="gallery_logistics_desc">Transport maritime et terrestre, certificats sanitaires, quarantaine et accompagnement documentaire complet, pour une exportation sans complication.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </article>
+      <article class="slide" data-species="logistics">
+        <div class="slide__photo" data-species="logistics"></div>
+        <div class="slide__scrim"></div>
+        <div class="slide__content">
+          <span class="slide__num">05</span>
+          <h3 data-i18n="gallery_logistics_title">Logistique &amp; certification</h3>
+          <p data-i18n="gallery_logistics_desc">Transport maritime et terrestre, certificats sanitaires, quarantaine et accompagnement documentaire complet, pour une exportation sans complication.</p>
+          <a href="#contact" class="card__link card__link--light" data-i18n="gallery_cta">Demander un devis →</a>
+        </div>
+      </article>
 
+    </div>
+
+    <div class="filmstrip__dots" id="filmstripDots"></div>
+    <button class="filmstrip__arrow filmstrip__arrow--prev" id="filmstripPrev" aria-label="Précédent">&#8249;</button>
+    <button class="filmstrip__arrow filmstrip__arrow--next" id="filmstripNext" aria-label="Suivant">&#8250;</button>
   </div>
   <div class="grass-divider" data-reveal aria-hidden="true"></div>
 </section>

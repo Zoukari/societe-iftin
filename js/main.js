@@ -35,7 +35,7 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
     revealEls.forEach(el => io.observe(el));
   } else {
     revealEls.forEach(el => el.classList.add('is-visible'));
@@ -72,7 +72,7 @@
     localStorage.setItem('iftin_lang', lang);
 
     // Re-render les vignettes filières (textes "Voir la galerie" / "Photo à venir")
-    document.querySelectorAll('.filiere__photo').forEach(renderFilierePhoto);
+    document.querySelectorAll('.slide__photo').forEach(renderFilierePhoto);
   }
 
   langToggle.addEventListener('click', () => {
@@ -97,10 +97,10 @@
 
   /* ---------- Filières (photos + lightbox) ---------- */
   const speciesPhotos = {
-    camel: ['images/gallery/camel-1.jpg', 'images/gallery/camel-2.jpg'],
-    cattle: ['images/gallery/cattle-1.jpg', 'images/gallery/cattle-2.jpg'],
+    camel: ['images/gallery/camel-1.jpg', 'images/gallery/camel-2.jpg', 'images/gallery/camel-3.jpg', 'images/gallery/camel-4.jpg'],
+    cattle: ['images/gallery/cattle-1.jpg', 'images/gallery/cattle-2.jpg', 'images/gallery/cattle-3.jpg', 'images/gallery/cattle-4.jpg'],
     goat: ['images/gallery/goat-pen.jpg', 'images/gallery/goat-landscape.jpg', 'images/gallery/goat-closeup.jpg'],
-    sheep: ['images/gallery/sheep-1.jpg', 'images/gallery/sheep-2.jpg', 'images/gallery/sheep-3.jpg'],
+    sheep: ['images/gallery/sheep-1.jpg', 'images/gallery/sheep-2.jpg', 'images/gallery/sheep-3.jpg', 'images/gallery/sheep-4.jpg', 'images/gallery/sheep-5.jpg', 'images/gallery/sheep-6.jpg', 'images/gallery/sheep-7.jpg'],
     logistics: ['images/gallery/hay-bales.jpg']
   };
 
@@ -115,7 +115,7 @@
 
     if (photos.length === 0) {
       const span = document.createElement('span');
-      span.className = 'filiere__soon';
+      span.className = 'slide__soon';
       span.setAttribute('data-i18n', 'gallery_photo_soon');
       span.textContent = translations[currentLangCode()].gallery_photo_soon;
       container.appendChild(span);
@@ -130,7 +130,7 @@
     container.classList.add('has-photos');
 
     const hint = document.createElement('span');
-    hint.className = 'filiere__hint';
+    hint.className = 'slide__hint';
     const dict = translations[currentLangCode()];
     hint.textContent = photos.length > 1
       ? `🔍 ${dict.gallery_view_gallery} (${photos.length})`
@@ -143,7 +143,49 @@
     }
   }
 
-  document.querySelectorAll('.filiere__photo').forEach(renderFilierePhoto);
+  document.querySelectorAll('.slide__photo').forEach(renderFilierePhoto);
+
+  /* ---------- Filmstrip (défilement horizontal + dots) ---------- */
+  const filmstrip = document.getElementById('filmstrip');
+  const filmstripDots = document.getElementById('filmstripDots');
+  const filmstripPrev = document.getElementById('filmstripPrev');
+  const filmstripNext = document.getElementById('filmstripNext');
+
+  if (filmstrip) {
+    const slides = Array.from(filmstrip.querySelectorAll('.slide'));
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      if (i === 0) dot.classList.add('is-active');
+      dot.setAttribute('aria-label', `Slide ${i + 1}`);
+      dot.addEventListener('click', () => {
+        slides[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+      });
+      filmstripDots.appendChild(dot);
+    });
+    const dots = Array.from(filmstripDots.children);
+
+    function updateActiveDot() {
+      const scrollLeft = filmstrip.scrollLeft;
+      let closest = 0;
+      let minDist = Infinity;
+      slides.forEach((s, i) => {
+        const dist = Math.abs(s.offsetLeft - filmstrip.offsetLeft - scrollLeft);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === closest));
+    }
+    filmstrip.addEventListener('scroll', () => {
+      window.clearTimeout(filmstrip._t);
+      filmstrip._t = window.setTimeout(updateActiveDot, 80);
+    }, { passive: true });
+
+    filmstripPrev && filmstripPrev.addEventListener('click', () => {
+      filmstrip.scrollBy({ left: -(slides[0].offsetWidth + 20), behavior: 'smooth' });
+    });
+    filmstripNext && filmstripNext.addEventListener('click', () => {
+      filmstrip.scrollBy({ left: slides[0].offsetWidth + 20, behavior: 'smooth' });
+    });
+  }
 
   /* ---------- Lightbox ---------- */
   const lightbox = document.getElementById('lightbox');
@@ -212,13 +254,12 @@
   const klikFloat = document.getElementById('klikFloat');
 
   function showKlikFloat() {
-    if (!klikFloat || sessionStorage.getItem('iftin_klik_seen')) return;
+    if (!klikFloat) return;
     setTimeout(() => {
       klikFloat.classList.add('is-shown');
       setTimeout(() => {
         klikFloat.classList.remove('is-shown');
         klikFloat.classList.add('is-hidden');
-        sessionStorage.setItem('iftin_klik_seen', '1');
       }, 10000);
     }, 400);
   }
