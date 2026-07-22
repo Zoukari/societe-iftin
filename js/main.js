@@ -314,6 +314,7 @@
   const lightboxPrev = document.getElementById('lightboxPrev');
   const lightboxNext = document.getElementById('lightboxNext');
   const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxFooter = lightbox.querySelector('.lightbox__footer');
   let lbSpecies = null;
   let lbIndex = 0;
 
@@ -327,8 +328,7 @@
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     const multi = photos.length > 1;
-    lightboxPrev.style.display = multi ? 'flex' : 'none';
-    lightboxNext.style.display = multi ? 'flex' : 'none';
+    lightboxFooter.style.display = multi ? 'flex' : 'none';
   }
 
   function updateLightbox() {
@@ -353,13 +353,27 @@
   lightboxClose.addEventListener('click', closeLightbox);
   lightboxPrev.addEventListener('click', () => lbStep(-1));
   lightboxNext.addEventListener('click', () => lbStep(1));
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === lightboxImg.parentElement) closeLightbox();
+  });
   document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('is-open')) return;
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') lbStep(-1);
     if (e.key === 'ArrowRight') lbStep(1);
   });
+
+  /* --- Swipe tactile --- */
+  let lbTouchX = null;
+  lightbox.addEventListener('touchstart', (e) => {
+    lbTouchX = e.touches[0].clientX;
+  }, { passive: true });
+  lightbox.addEventListener('touchend', (e) => {
+    if (lbTouchX === null) return;
+    const diff = e.changedTouches[0].clientX - lbTouchX;
+    if (Math.abs(diff) > 50) lbStep(diff < 0 ? 1 : -1);
+    lbTouchX = null;
+  }, { passive: true });
 
   /* ---------- Hero parallax (subtle) ---------- */
   const heroArt = document.querySelector('.hero__artimg');
