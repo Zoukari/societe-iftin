@@ -82,9 +82,9 @@
     safeStorage.set(localStorage, 'iftin_lang', lang);
 
     // Re-render le contenu de la section bétail immersive (titre/desc/bouton galerie)
-    // Re-render le panneau bétail actif (textes "Voir la galerie" / "Photo à venir")
-    renderShowcaseMedia(showcasePhoto.getAttribute('data-species') || 'camel');
-    document.querySelectorAll('.acc-photo').forEach(renderAccPhoto);
+    // Re-render le panneau bétail (textes "Voir la galerie" / "Photo à venir")
+    const activeCard = document.querySelector('.g5card.is-active');
+    if (activeCard) renderG5Panel(activeCard.getAttribute('data-species'));
   }
 
   langToggle.addEventListener('click', () => {
@@ -107,13 +107,13 @@
     });
   });
 
-  /* ---------- Showcase (clic sur le nom -> détails + photos) ---------- */
+  /* ---------- Grille 5 cartes (2 lignes, tout visible) ---------- */
   const speciesMap = {
-    camel:      { title: 'gallery_camel_title',      desc: 'gallery_camel_desc' },
-    cattle:     { title: 'gallery_cattle_title',      desc: 'gallery_cattle_desc' },
-    goat:       { title: 'gallery_goat_title',        desc: 'gallery_goat_desc' },
-    sheep:      { title: 'gallery_sheep_title',       desc: 'gallery_sheep_desc' },
-    logistics:  { title: 'gallery_logistics_title',   desc: 'gallery_logistics_desc' }
+    camel:      { title: 'gallery_camel_title',    desc: 'gallery_camel_desc' },
+    cattle:     { title: 'gallery_cattle_title',    desc: 'gallery_cattle_desc' },
+    goat:       { title: 'gallery_goat_title',      desc: 'gallery_goat_desc' },
+    sheep:      { title: 'gallery_sheep_title',     desc: 'gallery_sheep_desc' },
+    logistics:  { title: 'gallery_logistics_title', desc: 'gallery_logistics_desc' }
   };
   const speciesPhotos = {
     camel: ['images/gallery/camel-1.jpg', 'images/gallery/camel-2.jpg', 'images/gallery/camel-3.jpg', 'images/gallery/camel-4.jpg'],
@@ -122,49 +122,58 @@
     sheep: ['images/gallery/sheep-1.jpg', 'images/gallery/sheep-2.jpg', 'images/gallery/sheep-3.jpg', 'images/gallery/sheep-4.jpg', 'images/gallery/sheep-5.jpg', 'images/gallery/sheep-6.jpg', 'images/gallery/sheep-7.jpg'],
     logistics: ['images/gallery/hay-bales.jpg']
   };
-  const showcaseTabs = document.querySelectorAll('.showcase__tab');
-  const showcasePhoto = document.getElementById('showcasePhoto');
-  const showcaseTitle = document.getElementById('showcaseTitle');
-  const showcaseDesc = document.getElementById('showcaseDesc');
-  const showcaseTextWrap = document.querySelector('.showcase__text');
-  let carouselTimer = null;
 
   function currentLangCode() {
     return document.documentElement.getAttribute('lang') || 'fr';
   }
 
-  function stopCarousel() {
-    if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
+  const g5Cards = document.querySelectorAll('.g5card');
+  const g5Photo = document.getElementById('g5Photo');
+  const g5Title = document.getElementById('g5Title');
+  const g5Desc = document.getElementById('g5Desc');
+  const g5Panel = document.querySelector('.g5panel');
+  let g5Carousel = null;
+
+  // Charge la vignette sur chaque carte
+  g5Cards.forEach(card => {
+    const species = card.getAttribute('data-species');
+    const photos = speciesPhotos[species] || [];
+    const photoDiv = card.querySelector('.g5card__photo');
+    if (photos.length > 0) {
+      const img = document.createElement('img');
+      img.src = photos[0];
+      img.alt = '';
+      img.loading = 'lazy';
+      photoDiv.innerHTML = '';
+      photoDiv.appendChild(img);
+    }
+  });
+
+  function stopG5Carousel() {
+    if (g5Carousel) { clearInterval(g5Carousel); g5Carousel = null; }
   }
 
-  function setActivePhoto(index) {
-    const imgs = showcasePhoto.querySelectorAll('.showcase__img');
-    const dots = showcasePhoto.querySelectorAll('.showcase__dot');
+  function setG5ActivePhoto(index) {
+    const imgs = g5Photo.querySelectorAll('img.g5panel__img');
+    const dots = g5Photo.querySelectorAll('.showcase__dot');
     imgs.forEach((img, i) => img.classList.toggle('is-active', i === index));
     dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
   }
 
-  function restartCarousel(species, count) {
-    stopCarousel();
-    let current = 0;
-    carouselTimer = setInterval(() => {
-      current = (current + 1) % count;
-      setActivePhoto(current);
-    }, 4200);
-  }
-
-  function renderShowcaseMedia(species) {
-    stopCarousel();
+  function renderG5Panel(species) {
+    stopG5Carousel();
     const photos = speciesPhotos[species] || [];
-    showcasePhoto.innerHTML = '';
-    showcasePhoto.setAttribute('data-species', species);
+    // vider sauf le hint qu'on recrée
+    g5Photo.innerHTML = '';
+    g5Photo.setAttribute('data-species', species);
+    g5Photo.classList.remove('has-photos');
 
     if (photos.length === 0) {
       const span = document.createElement('span');
-      span.className = 'showcase__soon';
+      span.className = 'g5panel__photo__soon';
       span.setAttribute('data-i18n', 'gallery_photo_soon');
       span.textContent = translations[currentLangCode()].gallery_photo_soon;
-      showcasePhoto.appendChild(span);
+      g5Photo.appendChild(span);
       return;
     }
 
@@ -173,139 +182,82 @@
       img.src = src;
       img.alt = '';
       img.loading = 'lazy';
-      img.className = 'showcase__img' + (i === 0 ? ' is-active' : '');
-      showcasePhoto.appendChild(img);
+      img.className = 'g5panel__img' + (i === 0 ? ' is-active' : '');
+      g5Photo.appendChild(img);
     });
-    showcasePhoto.classList.add('has-photos');
+    g5Photo.classList.add('has-photos');
 
     const hint = document.createElement('span');
-    hint.className = 'showcase__hint';
+    hint.className = 'g5panel__photo__hint';
     const dict = translations[currentLangCode()];
     hint.textContent = photos.length > 1
       ? `🔍 ${dict.gallery_view_gallery} (${photos.length})`
       : `🔍 ${dict.gallery_view_zoom}`;
-    showcasePhoto.appendChild(hint);
+    hint.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(species, 0);
+    });
+    g5Photo.appendChild(hint);
 
     if (photos.length > 1) {
-      const dots = document.createElement('div');
-      dots.className = 'showcase__dots';
+      const dotsEl = document.createElement('div');
+      dotsEl.className = 'showcase__dots';
       photos.forEach((_, i) => {
         const dot = document.createElement('button');
         dot.className = 'showcase__dot' + (i === 0 ? ' is-active' : '');
         dot.setAttribute('aria-label', `Photo ${i + 1}`);
         dot.addEventListener('click', (e) => {
           e.stopPropagation();
-          setActivePhoto(i);
-          restartCarousel(species, photos.length);
+          setG5ActivePhoto(i);
+          stopG5Carousel();
         });
-        dots.appendChild(dot);
+        dotsEl.appendChild(dot);
       });
-      showcasePhoto.appendChild(dots);
-      restartCarousel(species, photos.length);
+      g5Photo.appendChild(dotsEl);
+
+      // auto-advance
+      let cur = 0;
+      g5Carousel = setInterval(() => {
+        cur = (cur + 1) % photos.length;
+        setG5ActivePhoto(cur);
+      }, 4200);
     }
 
-    if (!showcasePhoto.dataset.lightboxBound) {
-      showcasePhoto.addEventListener('click', () => {
-        const imgs = showcasePhoto.querySelectorAll('.showcase__img');
+    if (!g5Photo.dataset.lightboxBound) {
+      g5Photo.addEventListener('click', () => {
+        const imgs = g5Photo.querySelectorAll('img.g5panel__img');
         let activeIndex = 0;
         imgs.forEach((img, i) => { if (img.classList.contains('is-active')) activeIndex = i; });
-        openLightbox(showcasePhoto.getAttribute('data-species'), activeIndex);
+        openLightbox(g5Photo.getAttribute('data-species'), activeIndex);
       });
-      showcasePhoto.dataset.lightboxBound = '1';
+      g5Photo.dataset.lightboxBound = '1';
     }
   }
 
-  function setShowcase(species) {
+  function setG5Species(species) {
     const dict = translations[currentLangCode()];
     const map = speciesMap[species];
     if (!map) return;
 
-    showcaseTextWrap.classList.add('is-fading');
+    g5Panel.classList.add('is-fading');
     setTimeout(() => {
-      showcaseTitle.textContent = dict[map.title];
-      showcaseTitle.setAttribute('data-i18n', map.title);
-      showcaseDesc.textContent = dict[map.desc];
-      showcaseDesc.setAttribute('data-i18n', map.desc);
-      showcaseTextWrap.classList.remove('is-fading');
+      g5Title.textContent = dict[map.title];
+      g5Title.setAttribute('data-i18n', map.title);
+      g5Desc.textContent = dict[map.desc];
+      g5Desc.setAttribute('data-i18n', map.desc);
+      renderG5Panel(species);
+      g5Panel.classList.remove('is-fading');
     }, 180);
 
-    renderShowcaseMedia(species);
-
-    showcaseTabs.forEach(t => {
-      const active = t.getAttribute('data-target') === species;
-      t.classList.toggle('is-active', active);
-      t.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
+    g5Cards.forEach(c => c.classList.toggle('is-active', c.getAttribute('data-species') === species));
   }
 
-  showcaseTabs.forEach(tab => {
-    tab.addEventListener('click', () => setShowcase(tab.getAttribute('data-target')));
-    tab.addEventListener('mouseenter', stopCarousel);
-  });
-  showcasePhoto.parentElement.addEventListener('mouseleave', () => {
-    const species = showcasePhoto.getAttribute('data-species');
-    const count = (speciesPhotos[species] || []).length;
-    if (count > 1) restartCarousel(species, count);
+  g5Cards.forEach(card => {
+    card.addEventListener('click', () => setG5Species(card.getAttribute('data-species')));
   });
 
-  renderShowcaseMedia('camel');
-
-  /* ---------- Accordéon mobile (même principe, sans scroll horizontal) ---------- */
-  function renderAccPhoto(container) {
-    const species = container.getAttribute('data-species');
-    const photos = speciesPhotos[species] || [];
-    container.innerHTML = '';
-
-    if (photos.length === 0) {
-      const span = document.createElement('span');
-      span.className = 'acc-photo__soon';
-      span.setAttribute('data-i18n', 'gallery_photo_soon');
-      span.textContent = translations[currentLangCode()].gallery_photo_soon;
-      container.appendChild(span);
-      return;
-    }
-
-    const img = document.createElement('img');
-    img.src = photos[0];
-    img.alt = '';
-    img.loading = 'lazy';
-    container.appendChild(img);
-    container.classList.add('has-photos');
-
-    const hint = document.createElement('span');
-    hint.className = 'acc-photo__hint';
-    const dict = translations[currentLangCode()];
-    hint.textContent = photos.length > 1
-      ? `🔍 ${dict.gallery_view_gallery} (${photos.length})`
-      : `🔍 ${dict.gallery_view_zoom}`;
-    container.appendChild(hint);
-
-    if (!container.dataset.lightboxBound) {
-      container.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openLightbox(species, 0);
-      });
-      container.dataset.lightboxBound = '1';
-    }
-  }
-
-  document.querySelectorAll('.acc-photo').forEach(renderAccPhoto);
-
-  const accItems = document.querySelectorAll('.acc-item');
-  accItems.forEach(item => {
-    const header = item.querySelector('.acc-header');
-    header.addEventListener('click', () => {
-      const isOpen = item.classList.contains('is-open');
-      accItems.forEach(i => {
-        i.classList.remove('is-open');
-        i.querySelector('.acc-header').setAttribute('aria-expanded', 'false');
-      });
-      if (!isOpen) {
-        item.classList.add('is-open');
-        header.setAttribute('aria-expanded', 'true');
-      }
-    });
-  });
+  // init avec "camel"
+  setG5Species('camel');
 
   /* ---------- Lightbox ---------- */
   const lightbox = document.getElementById('lightbox');

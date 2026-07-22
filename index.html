@@ -171,108 +171,45 @@
     <p class="gallery__sub" data-i18n="gallery_sub">Chaque animal est sélectionné selon des critères précis de santé, d'âge et de poids, avant transport et exportation. Faites glisser pour découvrir chaque filière.</p>
   </div>
 
-  <div class="showcase" data-reveal>
-    <div class="showcase__tabs" role="tablist">
-      <button class="showcase__tab is-active" data-target="camel" role="tab" aria-selected="true">
-        <span class="showcase__tabnum">01</span>
-        <span class="showcase__tabname" data-i18n="gallery_camel_title">Dromadaires</span>
+  <div class="grid5" data-reveal>
+
+    <div class="grid5__cards">
+      <button class="g5card is-active" data-species="camel">
+        <div class="g5card__photo" data-species="camel"></div>
+        <span class="g5card__num">01</span>
+        <span class="g5card__name" data-i18n="gallery_camel_title">Dromadaires</span>
       </button>
-      <button class="showcase__tab" data-target="cattle" role="tab" aria-selected="false">
-        <span class="showcase__tabnum">02</span>
-        <span class="showcase__tabname" data-i18n="gallery_cattle_title">Bovins</span>
+      <button class="g5card" data-species="cattle">
+        <div class="g5card__photo" data-species="cattle"></div>
+        <span class="g5card__num">02</span>
+        <span class="g5card__name" data-i18n="gallery_cattle_title">Bovins</span>
       </button>
-      <button class="showcase__tab" data-target="goat" role="tab" aria-selected="false">
-        <span class="showcase__tabnum">03</span>
-        <span class="showcase__tabname" data-i18n="gallery_goat_title">Caprins</span>
+      <button class="g5card" data-species="goat">
+        <div class="g5card__photo" data-species="goat"></div>
+        <span class="g5card__num">03</span>
+        <span class="g5card__name" data-i18n="gallery_goat_title">Caprins</span>
       </button>
-      <button class="showcase__tab" data-target="sheep" role="tab" aria-selected="false">
-        <span class="showcase__tabnum">04</span>
-        <span class="showcase__tabname" data-i18n="gallery_sheep_title">Ovins</span>
+      <button class="g5card" data-species="sheep">
+        <div class="g5card__photo" data-species="sheep"></div>
+        <span class="g5card__num">04</span>
+        <span class="g5card__name" data-i18n="gallery_sheep_title">Ovins</span>
       </button>
-      <button class="showcase__tab" data-target="logistics" role="tab" aria-selected="false">
-        <span class="showcase__tabnum">05</span>
-        <span class="showcase__tabname" data-i18n="gallery_logistics_title">Foin</span>
+      <button class="g5card" data-species="logistics">
+        <div class="g5card__photo" data-species="logistics"></div>
+        <span class="g5card__num">05</span>
+        <span class="g5card__name" data-i18n="gallery_logistics_title">Foin</span>
       </button>
     </div>
 
-    <div class="showcase__panel">
-      <div class="showcase__visual">
-        <div class="showcase__photo" id="showcasePhoto" data-species="camel"></div>
-      </div>
-      <div class="showcase__text">
-        <h3 id="showcaseTitle" data-i18n="gallery_camel_title">Dromadaires</h3>
-        <p id="showcaseDesc" data-i18n="gallery_camel_desc">Dromadaires d'Afrique de l'Est, robustes et résistants à la chaleur, destinés à l'exportation vivante comme à la production de viande et de lait.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Version mobile : accordéon (même principe — on clique le nom, le détail s'ouvre juste en dessous) -->
-  <div class="accordion" id="accordion">
-    <div class="acc-item is-open" data-species="camel">
-      <button class="acc-header" aria-expanded="true">
-        <span class="acc-num">01</span>
-        <span class="acc-name" data-i18n="gallery_camel_title">Dromadaires</span>
-        <span class="acc-chevron" aria-hidden="true">▾</span>
-      </button>
-      <div class="acc-body">
-        <div class="acc-photo" data-species="camel"></div>
-        <p data-i18n="gallery_camel_desc">Dromadaires d'Afrique de l'Est, robustes et résistants à la chaleur, destinés à l'exportation vivante comme à la production de viande et de lait.</p>
+    <div class="g5panel">
+      <div class="g5panel__photo" id="g5Photo" data-species="camel"></div>
+      <div class="g5panel__text">
+        <h3 id="g5Title" data-i18n="gallery_camel_title">Dromadaires</h3>
+        <p id="g5Desc" data-i18n="gallery_camel_desc">Dromadaires d'Afrique de l'Est, robustes et résistants à la chaleur, destinés à l'exportation vivante comme à la production de viande et de lait.</p>
         <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
       </div>
     </div>
 
-    <div class="acc-item" data-species="cattle">
-      <button class="acc-header" aria-expanded="false">
-        <span class="acc-num">02</span>
-        <span class="acc-name" data-i18n="gallery_cattle_title">Bovins</span>
-        <span class="acc-chevron" aria-hidden="true">▾</span>
-      </button>
-      <div class="acc-body">
-        <div class="acc-photo" data-species="cattle"></div>
-        <p data-i18n="gallery_cattle_desc">Bovins sélectionnés pour la qualité de leur viande et leur endurance, adaptés aux longs transports vers les marchés régionaux et internationaux.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </div>
-
-    <div class="acc-item" data-species="goat">
-      <button class="acc-header" aria-expanded="false">
-        <span class="acc-num">03</span>
-        <span class="acc-name" data-i18n="gallery_goat_title">Caprins</span>
-        <span class="acc-chevron" aria-hidden="true">▾</span>
-      </button>
-      <div class="acc-body">
-        <div class="acc-photo" data-species="goat"></div>
-        <p data-i18n="gallery_goat_desc">Chèvres élevées pour la viande, très demandées sur les marchés du Golfe et d'Afrique pour leur qualité et leur disponibilité toute l'année.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </div>
-
-    <div class="acc-item" data-species="sheep">
-      <button class="acc-header" aria-expanded="false">
-        <span class="acc-num">04</span>
-        <span class="acc-name" data-i18n="gallery_sheep_title">Ovins</span>
-        <span class="acc-chevron" aria-hidden="true">▾</span>
-      </button>
-      <div class="acc-body">
-        <div class="acc-photo" data-species="sheep"></div>
-        <p data-i18n="gallery_sheep_desc">Moutons de qualité, particulièrement recherchés pour les grandes occasions religieuses et festives, livrables toute l'année.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </div>
-
-    <div class="acc-item" data-species="logistics">
-      <button class="acc-header" aria-expanded="false">
-        <span class="acc-num">05</span>
-        <span class="acc-name" data-i18n="gallery_logistics_title">Foin</span>
-        <span class="acc-chevron" aria-hidden="true">▾</span>
-      </button>
-      <div class="acc-body">
-        <div class="acc-photo" data-species="logistics"></div>
-        <p data-i18n="gallery_logistics_desc">Balles de foin de qualité pour l'alimentation du bétail pendant le transport et en quarantaine. Disponibles en grande quantité.</p>
-        <a href="#contact" class="card__link" data-i18n="gallery_cta">Demander un devis →</a>
-      </div>
-    </div>
   </div>
 
   <div class="grass-divider" data-reveal aria-hidden="true"></div>
@@ -364,22 +301,22 @@
     </div>
     <p class="footer__copy" data-i18n="footer_text">© 2026 Société Iftin. Tous droits réservés.</p>
   </div>
-  <div class="klik-pill">
+  <a class="klik-pill" href="https://klikdj.com" target="_blank" rel="noopener" aria-label="Site fait par KLIK">
     <span class="klik-pill__avatar">K</span>
-    <span class="klik-pill__text"><span data-i18n="klik_by">Site par</span> <strong>KLIK</strong></span>
+    <span class="klik-pill__text"><span data-i18n="klik_by">Site fait par</span> <strong>KLIK</strong></span>
     <span class="klik-pill__divider"></span>
     <span class="klik-pill__copy">© 2026</span>
-  </div>
+  </a>
 </footer>
 
 <!-- ============ KLIK — badge flottant d'ouverture ============ -->
 <div class="klik-float" id="klikFloat">
-  <div class="klik-pill">
+  <a class="klik-pill" href="https://klikdj.com" target="_blank" rel="noopener" aria-label="Site fait par KLIK">
     <span class="klik-pill__avatar">K</span>
-    <span class="klik-pill__text"><span data-i18n="klik_by">Site par</span> <strong>KLIK</strong></span>
+    <span class="klik-pill__text"><span data-i18n="klik_by">Site fait par</span> <strong>KLIK</strong></span>
     <span class="klik-pill__divider"></span>
     <span class="klik-pill__copy">© 2026</span>
-  </div>
+  </a>
 </div>
 
 <!-- ============ LANGUAGE BUBBLE ============ -->
