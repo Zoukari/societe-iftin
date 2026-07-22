@@ -82,7 +82,7 @@
       <img src="images/hero-art-transparent.png" alt="Dromadaire, vache et chèvre — Société Iftin" class="hero__artimg">
     </div>
   </div>
-  <div class="grass-divider" aria-hidden="true"></div>
+  <div class="grass-divider" data-reveal aria-hidden="true"></div>
 </section>
 
 <!-- ============ PRESENTATION ============ -->
@@ -95,26 +95,96 @@
     </div>
     <div class="about__text" data-reveal>
       <p class="eyebrow" data-i18n="about_eyebrow">Notre histoire</p>
-      <h2 data-i18n="about_title">35 ans d'élevage, de confiance et d'exportation</h2>
-      <p data-i18n="about_p1">Fondée en 1990 à Djibouti, Société Iftin accompagne éleveurs et acheteurs à travers la Corne de l'Afrique. Nous sélectionnons, contrôlons et exportons du bétail sain, dans le respect des normes sanitaires internationales.</p>
-      <p data-i18n="about_p2">De la ferme au port, chaque animal est suivi, soigné et documenté. Notre réseau couvre Djibouti et les pays voisins, avec une capacité d'exportation vers le Moyen-Orient, l'Afrique et au-delà.</p>
+      <h2 data-i18n="about_title">Plus de 40 ans d'expérience dans l'export de bétail</h2>
+      <p data-i18n="about_p1">Depuis 1982, Société Iftin exporte du bétail d'origine éthiopienne vers les marchés du Golfe et d'Afrique du Nord : Qatar, Arabie Saoudite, Émirats Arabes Unis, Oman, Égypte et Libye. Une expertise bâtie sur le terrain, animal après animal, client après client.</p>
+      <p data-i18n="about_p2">Au fil des années, nous avons accompagné plus de 200 clients et projets d'exportation, en apportant à chacun la même exigence : des animaux sains, sélectionnés avec soin et livrés dans les délais convenus.</p>
+
+      <ul class="about__points">
+        <li>
+          <strong data-i18n="point1_title">Position stratégique</strong>
+          <span data-i18n="point1_desc">Djibouti, porte d'entrée vers la mer Rouge et le Golfe.</span>
+        </li>
+        <li>
+          <strong data-i18n="point2_title">Réseau éprouvé</strong>
+          <span data-i18n="point2_desc">Plus de 200 clients et partenaires accompagnés depuis 1982.</span>
+        </li>
+        <li>
+          <strong data-i18n="point3_title">Traçabilité complète</strong>
+          <span data-i18n="point3_desc">De la sélection à la livraison, chaque animal est suivi et documenté.</span>
+        </li>
+      </ul>
+
       <div class="about__stats">
         <div class="stat">
-          <span class="stat__num">1990</span>
-          <span class="stat__label" data-i18n="stat1_label">Année de création</span>
+          <span class="stat__num">1982</span>
+          <span class="stat__label" data-i18n="stat1_label">Depuis</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">200+</span>
+          <span class="stat__label" data-i18n="stat4_label">Clients &amp; projets</span>
+        </div>
+        <div class="stat">
+          <span class="stat__num">6</span>
+          <span class="stat__label" data-i18n="stat5_label">Pays desservis</span>
         </div>
         <div class="stat">
           <span class="stat__num">4</span>
           <span class="stat__label" data-i18n="stat2_label">Espèces exportées</span>
         </div>
-        <div class="stat">
-          <span class="stat__num">100%</span>
-          <span class="stat__label" data-i18n="stat3_label">Contrôle sanitaire</span>
-        </div>
       </div>
     </div>
   </div>
-  <div class="grass-divider" aria-hidden="true"></div>
+
+  <!-- ============ CARTE / MARCHÉS D'EXPORT ============ -->
+  <div class="tradezones-wrap">
+    <div class="tradezones-head" data-reveal>
+      <p class="eyebrow" data-i18n="map_eyebrow">Nos marchés</p>
+      <h2 data-i18n="map_title">D'Éthiopie aux marchés du Golfe et d'Afrique du Nord</h2>
+      <p class="tradezones-sub" data-i18n="map_sub">Depuis notre hub à Djibouti, nos animaux rejoignent six pays. Survolez une destination pour en savoir plus.</p>
+    </div>
+
+    <div class="tradezones" data-reveal>
+      <svg class="tradezones__lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <line class="tradeline" data-target="libya"  x1="15" y1="57" x2="29" y2="13"></line>
+        <line class="tradeline" data-target="egypt"   x1="15" y1="57" x2="42" y2="20"></line>
+        <line class="tradeline" data-target="ksa"     x1="15" y1="57" x2="58" y2="30"></line>
+        <line class="tradeline" data-target="qatar"   x1="15" y1="57" x2="75" y2="41"></line>
+        <line class="tradeline" data-target="uae"     x1="15" y1="57" x2="84" y2="50"></line>
+        <line class="tradeline" data-target="oman"    x1="15" y1="57" x2="91" y2="65"></line>
+      </svg>
+
+      <div class="tradepin tradepin--origin" style="left:15%;top:57%">
+        <span class="tradepin__dot"></span>
+        <span class="tradepin__label" data-i18n="map_origin">Djibouti — Hub d'export</span>
+      </div>
+
+      <button class="tradepin" style="left:29%;top:13%" data-country="libya">
+        <span class="tradepin__dot"></span>
+        <span class="tradepin__label">🇱🇾 <span data-i18n="map_libya">Libye</span></span>
+      </button>
+      <button class="tradepin" style="left:42%;top:20%" data-country="egypt">
+        <span class="tradepin__dot"></span>
+        <span class="tradepin__label">🇪🇬 <span data-i18n="map_egypt">Égypte</span></span>
+      </button>
+      <button class="tradepin" style="left:58%;top:30%" data-country="ksa">
+        <span class="tradepin__dot"></span>
+        <span class="tradepin__label">🇸🇦 <span data-i18n="map_ksa">Arabie Saoudite</span></span>
+      </button>
+      <button class="tradepin" style="left:75%;top:41%" data-country="qatar">
+        <span class="tradepin__dot"></span>
+        <span class="tradepin__label">🇶🇦 <span data-i18n="map_qatar">Qatar</span></span>
+      </button>
+      <button class="tradepin" style="left:84%;top:50%" data-country="uae">
+        <span class="tradepin__dot"></span>
+        <span class="tradepin__label">🇦🇪 <span data-i18n="map_uae">Émirats Arabes Unis</span></span>
+      </button>
+      <button class="tradepin" style="left:91%;top:65%" data-country="oman">
+        <span class="tradepin__dot"></span>
+        <span class="tradepin__label">🇴🇲 <span data-i18n="map_oman">Oman</span></span>
+      </button>
+    </div>
+  </div>
+  <div class="grass-divider" data-reveal aria-hidden="true"></div>
 </section>
 
 <!-- ============ GALERIE ============ -->
@@ -151,9 +221,7 @@
 
     <div class="showcase__panel">
       <div class="showcase__visual">
-        <div class="showcase__photo" id="showcasePhoto" data-species="camel">
-          <span class="showcase__soon" data-i18n="gallery_photo_soon">Photo à venir</span>
-        </div>
+        <div class="showcase__photo" id="showcasePhoto" data-species="camel"></div>
       </div>
       <div class="showcase__text">
         <h3 id="showcaseTitle" data-i18n="gallery_camel_title">Dromadaires</h3>
@@ -162,7 +230,7 @@
       </div>
     </div>
   </div>
-  <div class="grass-divider" aria-hidden="true"></div>
+  <div class="grass-divider" data-reveal aria-hidden="true"></div>
 </section>
 
 <!-- ============ CONTACT ============ -->
