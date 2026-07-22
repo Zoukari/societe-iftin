@@ -27,6 +27,7 @@ const translations = {
     markets_sub: "Du bétail d'origine éthiopienne, exporté depuis Djibouti vers ces marchés.",
     gallery_view_gallery: "Voir la galerie", gallery_view_zoom: "Agrandir la photo",
     klik_by: "Site par",
+    beast_scroll_hint: "Défilez",
     map_libya: "Libye", map_egypt: "Égypte", map_ksa: "Arabie Saoudite",
     map_qatar: "Qatar", map_uae: "Émirats Arabes Unis", map_oman: "Oman",
 
@@ -92,6 +93,7 @@ const translations = {
     markets_sub: "Ethiopian-origin livestock, exported from Djibouti to these markets.",
     gallery_view_gallery: "View gallery", gallery_view_zoom: "Enlarge photo",
     klik_by: "Site by",
+    beast_scroll_hint: "Scroll",
     map_libya: "Libya", map_egypt: "Egypt", map_ksa: "Saudi Arabia",
     map_qatar: "Qatar", map_uae: "United Arab Emirates", map_oman: "Oman",
 
@@ -157,6 +159,7 @@ const translations = {
     markets_sub: "مواشٍ من أصل إثيوبي، تُصدَّر من جيبوتي إلى هذه الأسواق.",
     gallery_view_gallery: "عرض المعرض", gallery_view_zoom: "تكبير الصورة",
     klik_by: "الموقع من تصميم",
+    beast_scroll_hint: "مرّر للأسفل",
     map_libya: "ليبيا", map_egypt: "مصر", map_ksa: "السعودية",
     map_qatar: "قطر", map_uae: "الإمارات العربية المتحدة", map_oman: "عُمان",
 
@@ -222,6 +225,7 @@ const translations = {
     markets_sub: "Xoolo asal ahaan Itoobiya u dhalatay, laga dhoofiyo Jabuuti loo geeyo suuqyadan.",
     gallery_view_gallery: "Eeg sawirrada", gallery_view_zoom: "Balaadhi sawirka",
     klik_by: "Website-ka waxaa sameeyay",
+    beast_scroll_hint: "Dhaadhac",
     map_libya: "Liibiya", map_egypt: "Masar", map_ksa: "Sacuudi Carabiya",
     map_qatar: "Qatar", map_uae: "Isutagga Imaaraatka Carabta", map_oman: "Oman",
 
@@ -287,6 +291,7 @@ const translations = {
     markets_sub: "ከኢትዮጵያ ዝርያ የሆኑ እንስሶች፣ ከጅቡቲ ወደ እነዚህ ገበያዎች ይላካሉ።",
     gallery_view_gallery: "ማዕከለ ስዕላትን ይመልከቱ", gallery_view_zoom: "ፎቶውን ያሳድጉ",
     klik_by: "ድህረ ገጹ የተሰራው በ",
+    beast_scroll_hint: "ያንከብልሉ",
     map_libya: "ሊቢያ", map_egypt: "ግብጽ", map_ksa: "ሳውዲ አረቢያ",
     map_qatar: "ኳታር", map_uae: "የተባበሩት አረብ ኤምሬቶች", map_oman: "ኦማን",
 
