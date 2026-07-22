@@ -134,21 +134,6 @@
   const g5Panel = document.querySelector('.g5panel');
   let g5Carousel = null;
 
-  // Charge la vignette sur chaque carte
-  g5Cards.forEach(card => {
-    const species = card.getAttribute('data-species');
-    const photos = speciesPhotos[species] || [];
-    const photoDiv = card.querySelector('.g5card__photo');
-    if (photos.length > 0) {
-      const img = document.createElement('img');
-      img.src = photos[0];
-      img.alt = '';
-      img.loading = 'lazy';
-      photoDiv.innerHTML = '';
-      photoDiv.appendChild(img);
-    }
-  });
-
   function stopG5Carousel() {
     if (g5Carousel) { clearInterval(g5Carousel); g5Carousel = null; }
   }
