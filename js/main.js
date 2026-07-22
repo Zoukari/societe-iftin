@@ -84,6 +84,7 @@
     // Re-render le contenu de la section bétail immersive (titre/desc/bouton galerie)
     // Re-render le panneau bétail actif (textes "Voir la galerie" / "Photo à venir")
     renderShowcaseMedia(showcasePhoto.getAttribute('data-species') || 'camel');
+    document.querySelectorAll('.acc-photo').forEach(renderAccPhoto);
   }
 
   langToggle.addEventListener('click', () => {
@@ -248,6 +249,63 @@
   });
 
   renderShowcaseMedia('camel');
+
+  /* ---------- Accordéon mobile (même principe, sans scroll horizontal) ---------- */
+  function renderAccPhoto(container) {
+    const species = container.getAttribute('data-species');
+    const photos = speciesPhotos[species] || [];
+    container.innerHTML = '';
+
+    if (photos.length === 0) {
+      const span = document.createElement('span');
+      span.className = 'acc-photo__soon';
+      span.setAttribute('data-i18n', 'gallery_photo_soon');
+      span.textContent = translations[currentLangCode()].gallery_photo_soon;
+      container.appendChild(span);
+      return;
+    }
+
+    const img = document.createElement('img');
+    img.src = photos[0];
+    img.alt = '';
+    img.loading = 'lazy';
+    container.appendChild(img);
+    container.classList.add('has-photos');
+
+    const hint = document.createElement('span');
+    hint.className = 'acc-photo__hint';
+    const dict = translations[currentLangCode()];
+    hint.textContent = photos.length > 1
+      ? `🔍 ${dict.gallery_view_gallery} (${photos.length})`
+      : `🔍 ${dict.gallery_view_zoom}`;
+    container.appendChild(hint);
+
+    if (!container.dataset.lightboxBound) {
+      container.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLightbox(species, 0);
+      });
+      container.dataset.lightboxBound = '1';
+    }
+  }
+
+  document.querySelectorAll('.acc-photo').forEach(renderAccPhoto);
+
+  const accItems = document.querySelectorAll('.acc-item');
+  accItems.forEach(item => {
+    const header = item.querySelector('.acc-header');
+    header.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+      accItems.forEach(i => {
+        i.classList.remove('is-open');
+        i.querySelector('.acc-header').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('is-open');
+        header.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
 
   /* ---------- Lightbox ---------- */
   const lightbox = document.getElementById('lightbox');
