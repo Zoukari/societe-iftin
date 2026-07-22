@@ -517,7 +517,7 @@ body.intro-lock{overflow:hidden;height:100vh;}
 /* =========================================================
    Language bubble
    ========================================================= */
-.langbubble{position:fixed;bottom:1.4rem;right:1.4rem;z-index:80;font-family:var(--font-body);}
+.langbubble{position:fixed;bottom:5.6rem;right:1.4rem;z-index:80;font-family:var(--font-body);}
 .langbubble__toggle{
   width:54px;height:54px;border-radius:50%;background:var(--olive);color:var(--cream);
   border:none;cursor:pointer;font-weight:700;font-size:.85rem;
@@ -548,6 +548,34 @@ body.intro-lock{overflow:hidden;height:100vh;}
 html[dir="rtl"] .langbubble{right:auto;left:1.4rem;}
 html[dir="rtl"] .langbubble__menu{right:auto;left:0;}
 html[dir="rtl"] .langbubble__menu button{text-align:right;}
+
+/* =========================================================
+   WhatsApp floating button
+   ========================================================= */
+.wa-float{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:80;
+  width:54px;height:54px;border-radius:50%;
+  background:#25D366;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 14px 28px -10px rgba(37,211,102,.6);
+  transition:transform .2s ease;
+}
+.wa-float svg{width:28px;height:28px;}
+.wa-float:hover{transform:scale(1.08);}
+.wa-float::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:#25D366;opacity:.55;
+  animation:waPulse 2.4s ease-out infinite;
+  z-index:-1;
+}
+@keyframes waPulse{
+  0%{transform:scale(1);opacity:.55;}
+  100%{transform:scale(1.7);opacity:0;}
+}
+html[dir="rtl"] .wa-float{right:auto;left:1.4rem;}
+@media (prefers-reduced-motion: reduce){
+  .wa-float::before{animation:none;display:none;}
+}
 html[dir="rtl"] .navbar__nav a::after{left:auto;right:0;}
 html[dir="rtl"] .card__link,html[dir="rtl"] .infolist__label{direction:rtl;}
 

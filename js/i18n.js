@@ -63,9 +63,9 @@ const translations = {
 
     footer_text: "© 2026 Société Iftin. Tous droits réservés.",
 
-    wa_intro: "Nouvelle demande depuis le site :",
+    wa_intro: "🐫 Société Iftin — un nouveau contact vient d'atterrir :",
     wa_company: "Société", wa_email: "Email", wa_phone: "Téléphone", wa_country: "Pays", wa_message: "Message",
-    email_subject: "Nouvelle demande — Société Iftin"
+    email_subject: "🐫 Nouveau contact — Société Iftin"
   },
 
   en: {
@@ -128,9 +128,9 @@ const translations = {
 
     footer_text: "© 2026 Société Iftin. All rights reserved.",
 
-    wa_intro: "New request from the website:",
+    wa_intro: "🐫 Société Iftin — a new contact just landed:",
     wa_company: "Company", wa_email: "Email", wa_phone: "Phone", wa_country: "Country", wa_message: "Message",
-    email_subject: "New request — Société Iftin"
+    email_subject: "🐫 New contact — Société Iftin"
   },
 
   ar: {
@@ -193,9 +193,9 @@ const translations = {
 
     footer_text: "© 2026 Société Iftin. جميع الحقوق محفوظة.",
 
-    wa_intro: "طلب جديد من الموقع:",
+    wa_intro: "🐫 Société Iftin — وصلك تواصل جديد:",
     wa_company: "الشركة", wa_email: "البريد الإلكتروني", wa_phone: "الهاتف", wa_country: "البلد", wa_message: "الرسالة",
-    email_subject: "طلب جديد — Société Iftin"
+    email_subject: "🐫 تواصل جديد — Société Iftin"
   },
 
   so: {
@@ -258,9 +258,9 @@ const translations = {
 
     footer_text: "© 2026 Société Iftin. Dhammaan xuquuqda way dhowran tahay.",
 
-    wa_intro: "Codsi cusub oo ka yimid website-ka:",
+    wa_intro: "🐫 Société Iftin — xiriir cusub ayaa kusoo gaadhay:",
     wa_company: "Shirkadda", wa_email: "Email", wa_phone: "Telefoon", wa_country: "Dalka", wa_message: "Fariinta",
-    email_subject: "Codsi cusub — Société Iftin"
+    email_subject: "🐫 Xiriir cusub — Société Iftin"
   },
 
   am: {
@@ -323,9 +323,9 @@ const translations = {
 
     footer_text: "© 2026 Société Iftin. ሁሉም መብቶች የተጠበቁ ናቸው።",
 
-    wa_intro: "ከድህረ ገጹ አዲስ ጥያቄ፦",
+    wa_intro: "🐫 Société Iftin — አዲስ ግንኙነት ደርሷል፦",
     wa_company: "ኩባንያ", wa_email: "ኢሜይል", wa_phone: "ስልክ", wa_country: "ሀገር", wa_message: "መልዕክት",
-    email_subject: "አዲስ ጥያቄ — Société Iftin"
+    email_subject: "🐫 አዲስ ግንኙነት — Société Iftin"
   }
 };
 
