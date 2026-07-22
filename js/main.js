@@ -70,6 +70,9 @@
     });
 
     localStorage.setItem('iftin_lang', lang);
+
+    // Re-render les vignettes filières (textes "Voir la galerie" / "Photo à venir")
+    document.querySelectorAll('.filiere__photo').forEach(renderFilierePhoto);
   }
 
   langToggle.addEventListener('click', () => {
@@ -102,14 +105,7 @@
     applyLanguage(supported.includes(browser) ? browser : 'fr');
   })();
 
-  /* ---------- Showcase (onglets bétail) ---------- */
-  const speciesMap = {
-    camel:      { title: 'gallery_camel_title',      desc: 'gallery_camel_desc' },
-    cattle:     { title: 'gallery_cattle_title',      desc: 'gallery_cattle_desc' },
-    goat:       { title: 'gallery_goat_title',        desc: 'gallery_goat_desc' },
-    sheep:      { title: 'gallery_sheep_title',       desc: 'gallery_sheep_desc' },
-    logistics:  { title: 'gallery_logistics_title',   desc: 'gallery_logistics_desc' }
-  };
+  /* ---------- Filières (photos + lightbox) ---------- */
   const speciesPhotos = {
     camel: [],
     cattle: [],
@@ -117,117 +113,100 @@
     sheep: [],
     logistics: ['images/gallery/hay-bales.jpg']
   };
-  const showcaseTabs = document.querySelectorAll('.showcase__tab');
-  const showcasePhoto = document.getElementById('showcasePhoto');
-  const showcaseTitle = document.getElementById('showcaseTitle');
-  const showcaseDesc = document.getElementById('showcaseDesc');
-  const showcaseTextWrap = document.querySelector('.showcase__text');
-  let carouselTimer = null;
 
-  function stopCarousel() {
-    if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
+  function currentLangCode() {
+    return document.documentElement.getAttribute('lang') || 'fr';
   }
 
-  function setActivePhoto(index) {
-    const imgs = showcasePhoto.querySelectorAll('.showcase__img');
-    const dots = showcasePhoto.querySelectorAll('.showcase__dot');
-    imgs.forEach((img, i) => img.classList.toggle('is-active', i === index));
-    dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
-  }
-
-  function restartCarousel(species, count) {
-    stopCarousel();
-    let current = 0;
-    carouselTimer = setInterval(() => {
-      current = (current + 1) % count;
-      setActivePhoto(current);
-    }, 4200);
-  }
-
-  function renderShowcaseMedia(species) {
-    stopCarousel();
+  function renderFilierePhoto(container) {
+    const species = container.getAttribute('data-species');
     const photos = speciesPhotos[species] || [];
-    showcasePhoto.innerHTML = '';
-    showcasePhoto.setAttribute('data-species', species);
+    container.innerHTML = '';
 
     if (photos.length === 0) {
       const span = document.createElement('span');
-      span.className = 'showcase__soon';
+      span.className = 'filiere__soon';
       span.setAttribute('data-i18n', 'gallery_photo_soon');
-      span.textContent = translations[document.documentElement.getAttribute('lang') || 'fr'].gallery_photo_soon;
-      showcasePhoto.appendChild(span);
+      span.textContent = translations[currentLangCode()].gallery_photo_soon;
+      container.appendChild(span);
       return;
     }
 
-    photos.forEach((src, i) => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = '';
-      img.loading = 'lazy';
-      img.className = 'showcase__img' + (i === 0 ? ' is-active' : '');
-      showcasePhoto.appendChild(img);
-    });
+    const img = document.createElement('img');
+    img.src = photos[0];
+    img.alt = '';
+    img.loading = 'lazy';
+    container.appendChild(img);
+    container.classList.add('has-photos');
 
-    if (photos.length > 1) {
-      const dots = document.createElement('div');
-      dots.className = 'showcase__dots';
-      photos.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.className = 'showcase__dot' + (i === 0 ? ' is-active' : '');
-        dot.setAttribute('aria-label', `Photo ${i + 1}`);
-        dot.addEventListener('click', () => { setActivePhoto(i); restartCarousel(species, photos.length); });
-        dots.appendChild(dot);
-      });
-      showcasePhoto.appendChild(dots);
-      restartCarousel(species, photos.length);
+    const hint = document.createElement('span');
+    hint.className = 'filiere__hint';
+    const dict = translations[currentLangCode()];
+    hint.textContent = photos.length > 1
+      ? `🔍 ${dict.gallery_view_gallery} (${photos.length})`
+      : `🔍 ${dict.gallery_view_zoom}`;
+    container.appendChild(hint);
+
+    if (!container.dataset.lightboxBound) {
+      container.addEventListener('click', () => openLightbox(species, 0));
+      container.dataset.lightboxBound = '1';
     }
   }
 
-  function setShowcase(species) {
-    const dict = translations[document.documentElement.getAttribute('lang') || 'fr'];
-    const map = speciesMap[species];
-    if (!map) return;
+  document.querySelectorAll('.filiere__photo').forEach(renderFilierePhoto);
 
-    showcaseTextWrap.classList.add('is-fading');
-    setTimeout(() => {
-      showcaseTitle.textContent = dict[map.title];
-      showcaseTitle.setAttribute('data-i18n', map.title);
-      showcaseDesc.textContent = dict[map.desc];
-      showcaseDesc.setAttribute('data-i18n', map.desc);
-      showcaseTextWrap.classList.remove('is-fading');
-    }, 180);
+  /* ---------- Lightbox ---------- */
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCounter = document.getElementById('lightboxCounter');
+  const lightboxPrev = document.getElementById('lightboxPrev');
+  const lightboxNext = document.getElementById('lightboxNext');
+  const lightboxClose = document.getElementById('lightboxClose');
+  let lbSpecies = null;
+  let lbIndex = 0;
 
-    renderShowcaseMedia(species);
-
-    showcaseTabs.forEach(t => {
-      const active = t.getAttribute('data-target') === species;
-      t.classList.toggle('is-active', active);
-      t.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
+  function openLightbox(species, index) {
+    const photos = speciesPhotos[species] || [];
+    if (photos.length === 0) return;
+    lbSpecies = species;
+    lbIndex = index;
+    updateLightbox();
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    const multi = photos.length > 1;
+    lightboxPrev.style.display = multi ? 'flex' : 'none';
+    lightboxNext.style.display = multi ? 'flex' : 'none';
   }
 
-  showcaseTabs.forEach(tab => {
-    tab.addEventListener('click', () => setShowcase(tab.getAttribute('data-target')));
-    tab.addEventListener('mouseenter', stopCarousel);
-  });
-  showcasePhoto.parentElement.addEventListener('mouseleave', () => {
-    const species = showcasePhoto.getAttribute('data-species');
-    const count = (speciesPhotos[species] || []).length;
-    if (count > 1) restartCarousel(species, count);
-  });
+  function updateLightbox() {
+    const photos = speciesPhotos[lbSpecies] || [];
+    lightboxImg.src = photos[lbIndex];
+    lightboxCounter.textContent = photos.length > 1 ? `${lbIndex + 1} / ${photos.length}` : '';
+  }
 
-  renderShowcaseMedia('camel');
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
 
-  /* ---------- Trade zones map ---------- */
-  const tradepins = document.querySelectorAll('.tradepin[data-country]');
-  tradepins.forEach(pin => {
-    const country = pin.getAttribute('data-country');
-    const line = document.querySelector(`.tradeline[data-target="${country}"]`);
-    if (!line) return;
-    pin.addEventListener('mouseenter', () => line.classList.add('is-active'));
-    pin.addEventListener('mouseleave', () => line.classList.remove('is-active'));
-    pin.addEventListener('focus', () => line.classList.add('is-active'));
-    pin.addEventListener('blur', () => line.classList.remove('is-active'));
+  function lbStep(dir) {
+    const photos = speciesPhotos[lbSpecies] || [];
+    if (photos.length < 2) return;
+    lbIndex = (lbIndex + dir + photos.length) % photos.length;
+    updateLightbox();
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', () => lbStep(-1));
+  lightboxNext.addEventListener('click', () => lbStep(1));
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lbStep(-1);
+    if (e.key === 'ArrowRight') lbStep(1);
   });
 
   /* ---------- Hero parallax (subtle) ---------- */
@@ -239,6 +218,21 @@
     }, { passive: true });
   }
 
+  /* ---------- KLIK floating badge -> descends into footer ---------- */
+  const klikFloat = document.getElementById('klikFloat');
+
+  function showKlikFloat() {
+    if (!klikFloat || sessionStorage.getItem('iftin_klik_seen')) return;
+    setTimeout(() => {
+      klikFloat.classList.add('is-shown');
+      setTimeout(() => {
+        klikFloat.classList.remove('is-shown');
+        klikFloat.classList.add('is-hidden');
+        sessionStorage.setItem('iftin_klik_seen', '1');
+      }, 10000);
+    }, 400);
+  }
+
   /* ---------- Intro / opening screen ---------- */
   const introScreen = document.getElementById('introScreen');
   const introLangButtons = introScreen.querySelectorAll('.intro__langgrid button');
@@ -248,11 +242,13 @@
     document.body.classList.remove('intro-lock');
     sessionStorage.setItem('iftin_intro_seen', '1');
     setTimeout(() => { introScreen.style.display = 'none'; }, 550);
+    showKlikFloat();
   }
 
   if (sessionStorage.getItem('iftin_intro_seen')) {
     introScreen.style.display = 'none';
     document.body.classList.remove('intro-lock');
+    showKlikFloat();
   } else {
     introLangButtons.forEach(btn => {
       btn.addEventListener('click', () => {
