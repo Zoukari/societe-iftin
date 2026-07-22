@@ -95,22 +95,12 @@
     });
   });
 
-  // Langue initiale : mémorisée, sinon celle du navigateur, sinon FR
-  (function initLang() {
-    const saved = localStorage.getItem('iftin_lang');
-    if (saved && translations[saved]) return applyLanguage(saved);
-
-    const browser = (navigator.language || 'fr').slice(0, 2).toLowerCase();
-    const supported = ['fr', 'en', 'ar', 'so', 'am'];
-    applyLanguage(supported.includes(browser) ? browser : 'fr');
-  })();
-
   /* ---------- Filières (photos + lightbox) ---------- */
   const speciesPhotos = {
-    camel: [],
-    cattle: [],
+    camel: ['images/gallery/camel-1.jpg', 'images/gallery/camel-2.jpg'],
+    cattle: ['images/gallery/cattle-1.jpg', 'images/gallery/cattle-2.jpg'],
     goat: ['images/gallery/goat-pen.jpg', 'images/gallery/goat-landscape.jpg', 'images/gallery/goat-closeup.jpg'],
-    sheep: [],
+    sheep: ['images/gallery/sheep-1.jpg', 'images/gallery/sheep-2.jpg', 'images/gallery/sheep-3.jpg'],
     logistics: ['images/gallery/hay-bales.jpg']
   };
 
@@ -309,5 +299,17 @@
       window.location.href = `mailto:zoukari@hotmail.com?subject=${subject}&body=${mailBody}`;
     }
   });
+
+  // Langue initiale : mémorisée, sinon celle du navigateur, sinon FR
+  // (placé en fin de script pour que toutes les fonctions/données utilisées
+  // par applyLanguage — filières, lightbox, etc. — soient déjà définies)
+  (function initLang() {
+    const saved = localStorage.getItem('iftin_lang');
+    if (saved && translations[saved]) return applyLanguage(saved);
+
+    const browser = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+    const supported = ['fr', 'en', 'ar', 'so', 'am'];
+    applyLanguage(supported.includes(browser) ? browser : 'fr');
+  })();
 
 })();
